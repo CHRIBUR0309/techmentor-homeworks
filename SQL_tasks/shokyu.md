@@ -27,15 +27,16 @@ WHERE
 
 ```SQL
 INSERT INTO
-    customer
-        (store_id
+    customer (
+        store_id
         , first_name
         , last_name
         , email
         , address_id
         , active)
-    VALUES
-        (2
+VALUES
+    (
+        2
         , "Hogehoge"
         , "Fugafuga"
         , "hogefuga@sakilacustomer.org"
