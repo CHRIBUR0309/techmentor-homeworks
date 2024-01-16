@@ -33,7 +33,8 @@ INSERT INTO
         , last_name
         , email
         , address_id
-        , active)
+        , active
+    )
 VALUES
     (
         2
@@ -41,7 +42,8 @@ VALUES
         , "Fugafuga"
         , "hogefuga@sakilacustomer.org"
         , 600
-        , 1)
+        , 1
+    )
 ;
 ```
 
