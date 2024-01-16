@@ -4,6 +4,8 @@
 .git
 .git/*
 
+.mise.toml
+
 ### Java ###
 # Compiled class file
 *.class
