@@ -233,7 +233,7 @@ class Todo implements Formattable {
     }
 
     void updateWhenLastUpdated() {
-        this.whenLastUpdated = sleepThenNow();
+        this.whenLastUpdated = now();
     }
 
     @Override
