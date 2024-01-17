@@ -38,9 +38,9 @@ INSERT INTO
 VALUES
     (
         2
-        , "Hogehoge"
-        , "Fugafuga"
-        , "hogefuga@sakilacustomer.org"
+        , 'Hogehoge'
+        , 'Fugafuga'
+        , 'hogefuga@sakilacustomer.org'
         , 600
         , 1
     )
@@ -53,7 +53,7 @@ VALUES
 UPDATE
     customer
 SET
-    email = "updated@email.com"
+    email = 'updated@email.com'
 WHERE
     customer_id = 5
 ;
