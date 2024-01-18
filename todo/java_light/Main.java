@@ -1,7 +1,5 @@
-package todo.java;
+package todo.java_light;
 
-import java.io.*;
-import java.nio.file.*;
 import java.util.*;
 
 public class Main {
@@ -118,7 +116,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        label_top: while (true) {
+        while (true) {
             System.out.print("""
                     Input a command.
                     1. Add a todo item
