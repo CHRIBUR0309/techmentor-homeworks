@@ -5,78 +5,61 @@ import java.time.format.*;
 import java.util.*;
 import java.util.stream.*;
 
-class SharedConstantValues {
-    private static final boolean IS_PROCEEDING_BOOLEAN = true;
-    private static final int FINISHED_IMPORTANCE = -1;
-
-    boolean getIsProceedingBoolean() {
-        return IS_PROCEEDING_BOOLEAN;
-    }
-
-    int getFinishedImportance() {
-        return FINISHED_IMPORTANCE;
-    }
-}
-
-
 /**
  * Todo class has the information of each todo item.
  */
 class Todo implements Formattable {
     private String whenRegistered;
     private String title;
-    private int importance;
-    private boolean isProceeding;
+    private Importance importance;
+    private IsProceeding isProceeding;
     private String whenLastUpdated;
     private static final RandomTimeSleeper RANDOM_TIME_SLEEPER = new RandomTimeSleeper();
     private static final int SLEEP_TIME_MIN = 10;
     private static final int SLEEP_TIME_MAX = 1000;
-    private static final DateTimeFormatter DATE_TIME_FORMATTER =
-            DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-    private static final SharedConstantValues SHARED_CONSTANT_VALUES = new SharedConstantValues();
-    private static final boolean IS_PROCEEDING_BOOLEAN =
-            SHARED_CONSTANT_VALUES.getIsProceedingBoolean();
-    private static final int FINISHED_IMPORTANCE = SHARED_CONSTANT_VALUES.getFinishedImportance();
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
     /**
      * Gets the title and the importance of the item and constructs the class.
      *
-     * @param title the title of the item
+     * @param title      the title of the item
      * @param importance the importance of the item
      */
-    Todo(String title, int importance) {
+    Todo(String title, Importance importance) {
         this.whenRegistered = sleepThenNow();
         this.title = title;
         this.importance = importance;
-        this.isProceeding = !IS_PROCEEDING_BOOLEAN;
+        this.isProceeding = IsProceeding.UNPROCESSED;
         this.whenLastUpdated = this.whenRegistered;
     }
 
     /**
-     * Gets the title, the importance, and the datetime when updated last of the item and constructs
+     * Gets the title, the importance, and the datetime when updated last of the
+     * item and constructs
      * the class.
      *
-     * @param title the title of the item
-     * @param importance the importance of the item
+     * @param title           the title of the item
+     * @param importance      the importance of the item
      * @param whenLastUpdated the datetime when updated last of the item
      */
-    Todo(String title, int importance, String whenLastUpdated) {
+    Todo(String title, Importance importance, String whenLastUpdated) {
         this.whenRegistered = sleepThenNow();
         this.title = title;
         this.importance = importance;
-        this.isProceeding = !IS_PROCEEDING_BOOLEAN;
+        this.isProceeding = IsProceeding.UNPROCESSED;
         this.whenLastUpdated = whenLastUpdated;
     }
 
     /**
-     * Gets the title, the importance, and is proceeding or not of the item and constructs the
+     * Gets the title, the importance, and is proceeding or not of the item and
+     * constructs the
      * class.
      *
-     * @param title the title of the item
-     * @param importance the importance of the item
+     * @param title        the title of the item
+     * @param importance   the importance of the item
      * @param isProceeding is proceeding or not of the item
      */
-    Todo(String title, int importance, boolean isProceeding) {
+    Todo(String title, Importance importance, IsProceeding isProceeding) {
         this.whenRegistered = sleepThenNow();
         this.title = title;
         this.importance = importance;
@@ -85,15 +68,16 @@ class Todo implements Formattable {
     }
 
     /**
-     * Gets the title, the importance, is proceeding or not, and the datetime when updated last of
+     * Gets the title, the importance, is proceeding or not, and the datetime when
+     * updated last of
      * the item and constructs the class.
      *
-     * @param title the title of the item
-     * @param importance the importance of the item
-     * @param isProceeding is proceeding or not of the item
+     * @param title           the title of the item
+     * @param importance      the importance of the item
+     * @param isProceeding    is proceeding or not of the item
      * @param whenLastUpdated the datetime when updated last of the item
      */
-    Todo(String title, int importance, boolean isProceeding, String whenLastUpdated) {
+    Todo(String title, Importance importance, IsProceeding isProceeding, String whenLastUpdated) {
         this.whenRegistered = sleepThenNow();
         this.title = title;
         this.importance = importance;
@@ -102,48 +86,51 @@ class Todo implements Formattable {
     }
 
     /**
-     * Gets the datetime when registered, the title, and the importance of the item and constructs
+     * Gets the datetime when registered, the title, and the importance of the item
+     * and constructs
      * the class.
      *
      * @param whenRegistered the datetime when registered of the item
-     * @param title the title of the item
-     * @param importance the importance of the item
+     * @param title          the title of the item
+     * @param importance     the importance of the item
      */
-    Todo(String whenRegistered, String title, int importance) {
+    Todo(String whenRegistered, String title, Importance importance) {
         this.whenRegistered = whenRegistered;
         this.title = title;
         this.importance = importance;
-        this.isProceeding = !IS_PROCEEDING_BOOLEAN;
+        this.isProceeding = IsProceeding.UNPROCESSED;
         this.whenLastUpdated = this.whenRegistered;
     }
 
     /**
-     * Gets the datetime when registered, the title, the importance, and the datetime when updated
+     * Gets the datetime when registered, the title, the importance, and the
+     * datetime when updated
      * last of the item and constructs the class.
      *
-     * @param whenRegistered the datetime when registered of the item
-     * @param title the title of the item
-     * @param importance the importance of the item
+     * @param whenRegistered  the datetime when registered of the item
+     * @param title           the title of the item
+     * @param importance      the importance of the item
      * @param whenLastUpdated the datetime when updated last of the item
      */
-    Todo(String whenRegistered, String title, int importance, String whenLastUpdated) {
+    Todo(String whenRegistered, String title, Importance importance, String whenLastUpdated) {
         this.whenRegistered = whenRegistered;
         this.title = title;
         this.importance = importance;
-        this.isProceeding = !IS_PROCEEDING_BOOLEAN;
+        this.isProceeding = IsProceeding.UNPROCESSED;
         this.whenLastUpdated = whenLastUpdated;
     }
 
     /**
-     * Gets the datetime when registered, the title, the importance, and is proceeding or not of the
+     * Gets the datetime when registered, the title, the importance, and is
+     * proceeding or not of the
      * item and constructs the class.
      *
      * @param whenRegistered the datetime when registered of the item
-     * @param title the title of the item
-     * @param importance the importance of the item
-     * @param isProceeding is proceeding or not of the item
+     * @param title          the title of the item
+     * @param importance     the importance of the item
+     * @param isProceeding   is proceeding or not of the item
      */
-    Todo(String whenRegistered, String title, int importance, boolean isProceeding) {
+    Todo(String whenRegistered, String title, Importance importance, IsProceeding isProceeding) {
         this.whenRegistered = whenRegistered;
         this.title = title;
         this.importance = importance;
@@ -152,16 +139,17 @@ class Todo implements Formattable {
     }
 
     /**
-     * Gets the datetime when registered, the title, the importance, is proceeding or not, and the
+     * Gets the datetime when registered, the title, the importance, is proceeding
+     * or not, and the
      * datetime when updated last of the item and constructs the class.
      *
-     * @param whenRegistered the datetime when registered of the item
-     * @param title the title of the item
-     * @param importance the importance of the item
-     * @param isProceeding is proceeding or not of the item
+     * @param whenRegistered  the datetime when registered of the item
+     * @param title           the title of the item
+     * @param importance      the importance of the item
+     * @param isProceeding    is proceeding or not of the item
      * @param whenLastUpdated the datetime when updated last of the item
      */
-    Todo(String whenRegistered, String title, int importance, boolean isProceeding,
+    Todo(String whenRegistered, String title, Importance importance, IsProceeding isProceeding,
             String whenLastUpdated) {
         this.whenRegistered = whenRegistered;
         this.title = title;
@@ -184,7 +172,8 @@ class Todo implements Formattable {
 
     /**
      * Calls {@code sleep()} if it is able, and then, calls {@code now()}.
-     * {@code this.whenRegistered} should be the primary key so random time sleeping helps that.
+     * {@code this.whenRegistered} should be the primary key so random time sleeping
+     * helps that.
      *
      * @return {@code now()} the datetime when called
      */
@@ -212,19 +201,19 @@ class Todo implements Formattable {
         this.title = title;
     }
 
-    int getImportance() {
+    Importance getImportance() {
         return this.importance;
     }
 
-    void setImportance(int importance) {
+    void setImportance(Importance importance) {
         this.importance = importance;
     }
 
-    boolean getIsProceeding() {
+    IsProceeding getIsProceeding() {
         return this.isProceeding;
     }
 
-    void setIsProceeding(boolean isProceeding) {
+    void setIsProceeding(IsProceeding isProceeding) {
         this.isProceeding = isProceeding;
     }
 
@@ -238,41 +227,38 @@ class Todo implements Formattable {
 
     @Override
     public String toString() {
-        List<String> data =
-                Arrays.asList(this.whenRegistered, this.title, String.valueOf(this.importance),
-                        String.valueOf(this.isProceeding), this.whenLastUpdated);
+        List<String> data = Arrays.asList(this.whenRegistered, this.title,
+                String.valueOf(Importance.importanceToInt(this.importance)),
+                String.valueOf(IsProceeding.isProceedingToBoolean(this.isProceeding)), this.whenLastUpdated);
         return String.join(",", data);
     }
 
     @Override
     public void formatTo(Formatter formatter, int flags, int width, int precision) {
-        if (this.importance == FINISHED_IMPORTANCE) {
+        int importanceInt = Importance.importanceToInt(this.importance);
+        if (this.importance == Importance.FINISHED) {
             formatter.format(
                     "%1$s%n    Proceeding level: Finished%n    Registered: %2$s%n    Last updated: %3$s",
                     this.title, this.whenRegistered, this.whenLastUpdated);
-        } else if (this.isProceeding == IS_PROCEEDING_BOOLEAN) {
+        } else if (this.isProceeding == IsProceeding.PROCEEDING) {
             formatter.format(
                     "%1$s%n    Importance level: %2$2d%n    Proceeding level: Proceeding%n    Registered: %3$s%n    Last updated: %4$s",
-                    this.title, this.importance, this.whenRegistered, this.whenLastUpdated);
+                    this.title, importanceInt, this.whenRegistered, this.whenLastUpdated);
         } else {
             formatter.format(
                     "%1$s%n    Importance level: %2$2d%n    Proceeding level: Unprocessed%n    Registered: %3$s%n    Last updated: %4$s",
-                    this.title, this.importance, this.whenRegistered, this.whenLastUpdated);
+                    this.title, importanceInt, this.whenRegistered, this.whenLastUpdated);
         }
     }
 }
 
-
 /**
- * TodoList class is a list of Todo items. It looks like {@code List<Todo>}, but this can sort items
+ * TodoList class is a list of Todo items. It looks like {@code List<Todo>}, but
+ * this can sort items
  * automatically.
  */
 class TodoList implements Formattable {
     List<Todo> todoList;
-    private static final SharedConstantValues SHARED_CONSTANT_VALUES = new SharedConstantValues();
-    private static final boolean IS_PROCEEDING_BOOLEAN =
-            SHARED_CONSTANT_VALUES.getIsProceedingBoolean();
-    private static final int FINISHED_IMPORTANCE = SHARED_CONSTANT_VALUES.getFinishedImportance();
 
     /**
      * Constructs the class.
@@ -291,25 +277,26 @@ class TodoList implements Formattable {
     /**
      * Gets the title and the importance of the item and adds it to this.
      *
-     * @param title the title of the item
+     * @param title      the title of the item
      * @param importance the importance of the item
      */
-    void addTodoItem(String title, int importance) {
+    void addTodoItem(String title, Importance importance) {
         this.todoList.add(new Todo(title, importance));
         this.sort();
     }
 
     /**
-     * Gets the datetime when registered, the title, the importance, is proceeding or not, and the
+     * Gets the datetime when registered, the title, the importance, is proceeding
+     * or not, and the
      * datetime when updated last of the item and adds it to this.
      *
-     * @param whenRegistered the datetime when registered of the item
-     * @param title the title of the item
-     * @param importance the importance of the item
-     * @param isProceeding is proceeding or not of the item
+     * @param whenRegistered  the datetime when registered of the item
+     * @param title           the title of the item
+     * @param importance      the importance of the item
+     * @param isProceeding    is proceeding or not of the item
      * @param whenLastUpdated the datetime when updated last of the item
      */
-    void addTodoItem(String whenRegistered, String title, int importance, boolean isProceeding,
+    void addTodoItem(String whenRegistered, String title, Importance importance, IsProceeding isProceeding,
             String whenLastUpdated) {
         this.todoList
                 .add(new Todo(whenRegistered, title, importance, isProceeding, whenLastUpdated));
@@ -329,7 +316,7 @@ class TodoList implements Formattable {
      * Gets the index of the item and the changed title and changes the title of it.
      *
      * @param changedIndexIndex the index of the item
-     * @param changedTitle the changed title of the item
+     * @param changedTitle      the changed title of the item
      */
     void changeItemTitle(int changedIndex, String changedTitle) {
         Todo item = this.todoList.get(changedIndex);
@@ -339,12 +326,13 @@ class TodoList implements Formattable {
     }
 
     /**
-     * Gets the index of the item and the changed importance and changes the importance of it.
+     * Gets the index of the item and the changed importance and changes the
+     * importance of it.
      *
      * @param changedIndexIndex the index of the item
      * @param changedImportance the changed importance of the item
      */
-    void changeItemImportance(int changedIndex, int changedImportance) {
+    void changeItemImportance(int changedIndex, Importance changedImportance) {
         Todo item = this.todoList.get(changedIndex);
         item.setImportance(changedImportance);
         item.updateWhenLastUpdated();
@@ -353,13 +341,14 @@ class TodoList implements Formattable {
     }
 
     /**
-     * Gets the index of the item and the changed is proceeding or not of the item and changes the
+     * Gets the index of the item and the changed is proceeding or not of the item
+     * and changes the
      * proceeding level of it.
      *
-     * @param changedIndexIndex the index of the item
+     * @param changedIndexIndex   the index of the item
      * @param changedIsProceeding is proceeding or not of the item
      */
-    void changeItemProceeding(int changedIndex, boolean changedProcessing) {
+    void changeItemProceeding(int changedIndex, IsProceeding changedProcessing) {
         Todo item = this.todoList.get(changedIndex);
         item.setIsProceeding(changedProcessing);
         item.updateWhenLastUpdated();
@@ -373,8 +362,8 @@ class TodoList implements Formattable {
      */
     void finishItemProcessing(int changedIndex) {
         Todo item = this.todoList.get(changedIndex);
-        item.setIsProceeding(IS_PROCEEDING_BOOLEAN);
-        item.setImportance(FINISHED_IMPORTANCE);
+        item.setIsProceeding(IsProceeding.PROCEEDING);
+        item.setImportance(Importance.FINISHED);
         item.updateWhenLastUpdated();
         this.todoList.set(changedIndex, item);
         this.sort();

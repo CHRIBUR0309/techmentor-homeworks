@@ -18,7 +18,7 @@ public class Main {
         }
     }
 
-    static int inputImportance() {
+    static Importance inputImportance() {
         int importance;
         String errorMessage = "Error: Importance level must be between 1 and 10. Try again.";
         while (true) {
@@ -26,7 +26,7 @@ public class Main {
             try {
                 importance = Integer.parseInt(scanner.nextLine());
                 if (importance >= 1 && importance <= 10) {
-                    return importance;
+                    return Importance.intToImportance(importance);
                 }
                 System.err.println(errorMessage);
             } catch (NumberFormatException e) {
@@ -37,7 +37,7 @@ public class Main {
 
     static void addTodoItem() {
         String title = inputTitle();
-        int importance = inputImportance();
+        Importance importance = inputImportance();
         tempTodoList.addTodoItem(title, importance);
         System.out.println("%s".formatted(tempTodoList));
     }
@@ -45,8 +45,7 @@ public class Main {
     static int inputIndex(String message) {
         int index;
         int size = tempTodoList.todoList.size();
-        String errorMessage =
-                "Error: The number must be between 0 and " + (size - 1) + ". Try again.";
+        String errorMessage = "Error: The number must be between 0 and " + (size - 1) + ". Try again.";
         while (true) {
             System.out.print(message);
             try {
@@ -82,7 +81,7 @@ public class Main {
         System.out.println("%s".formatted(tempTodoList));
         String message = "The item number you want to change importance level: ";
         int changedIndex = inputIndex(message);
-        int importance = inputImportance();
+        Importance importance = inputImportance();
         tempTodoList.changeItemImportance(changedIndex, importance);
         System.out.println("%s".formatted(tempTodoList));
     }
@@ -97,7 +96,7 @@ public class Main {
         while (true) {
             proceeding = scanner.nextLine().toLowerCase();
             if (proceeds.contains(proceeding)) {
-                boolean changedProceeding = proceeding.equals(proceedingStr);
+                IsProceeding changedProceeding = IsProceeding.booleanToIsProceeding(proceeding.equals(proceedingStr));
                 tempTodoList.changeItemProceeding(changedIndex, changedProceeding);
                 break;
             }
