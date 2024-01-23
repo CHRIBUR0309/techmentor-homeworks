@@ -55,7 +55,7 @@ VALUES
     )
 ;
 
-ROLLBACK
+COMMIT
 ;
 
 BEGIN
@@ -86,6 +86,6 @@ VALUES
     )
 ;
 
-ROLLBACK
+COMMIT
 ;
 ```
