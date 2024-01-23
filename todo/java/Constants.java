@@ -1,26 +1,36 @@
 package todo.java;
 
+import java.util.*;
+
 enum Importance {
     FINISHED, ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN;
 
     private static final Importance[] VALUES = Importance.values();
+    private static final int NUM_IMPORTANCE = VALUES.length;
+    private static final Map<Integer, Importance> MAP_INT_TO_IMPORTANCE = new HashMap<>() {
+        {
+            for (int i = 0; i < NUM_IMPORTANCE; i++) {
+                put(i - 1, VALUES[i]);
+            }
+        }
+    };
+    private static final Map<Importance, Integer> MAP_IMPORTANCE_TO_INT = new HashMap<>() {
+        {
+            for (int i = 0; i < NUM_IMPORTANCE; i++) {
+                put(VALUES[i], i - 1);
+            }
+        }
+    };
 
     static Importance intToImportance(int importance) {
-        if (importance >= -1 && importance <= 10) {
-            return VALUES[importance + 1];
-        }
-        return null;
+        return MAP_INT_TO_IMPORTANCE.get(importance);
     }
 
     static int importanceToInt(Importance importance) {
-        for (int i = 0; i < VALUES.length; i++) {
-            if (VALUES[i] == importance) {
-                return i - 1;
-            }
-        }
-        return -2;// If this one line is removed, the editor throws an error.
+        return MAP_IMPORTANCE_TO_INT.get(importance);
     }
 }
+
 
 enum IsProceeding {
     PROCEEDING, UNPROCESSED;
