@@ -1,4 +1,4 @@
-package todo.spring_boot.restful_todo.src.test.java.com.example.restful_todo;
+package com.example.restful_todo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
