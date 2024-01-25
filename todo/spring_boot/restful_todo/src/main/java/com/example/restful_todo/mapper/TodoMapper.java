@@ -15,7 +15,7 @@ public interface TodoMapper {
     @Insert("INSERT INTO todo (title, status, details) VALUES (#{title.getTitle()}, #{status.getStatus()}, #{details.getDetails()})")
     TodoItem createTodoItem(TodoItem todoItem);
 
-    @Update("UPDATE todo SET title = #{requestTodoItem.getTitle().getTitle()}, status = #{requestTodoItem.getStatus().getStatus()}, details = #{requestTodoItem.getDetails().getDetails()} WHERE id = #{getId()}")
+    @Update("UPDATE todo SET title = #{requestTodoItem.getTitle().getTitle()}, status = #{requestTodoItem.getStatus().getStatus()}, details = #{requestTodoItem.getDetails().getDetails()} WHERE id = #{todoId.getId()}")
     TodoItem updateTodoItem(TodoId todoId, TodoItem requestTodoItem);
 
     @Delete("DELETE FROM todo WHERE id = #{id}")
