@@ -18,32 +18,38 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-    @GetMapping("todo_items/")
+    @GetMapping("/todo_items")
     public ResponseEntity<List<TodoItem>> getTodoItems() {
         return new ResponseEntity<List<TodoItem>>(this.todoService.getTodoItems(), HttpStatus.OK);
     }
 
-    @GetMapping("todo_items/{id}")
-    public ResponseEntity<TodoItem> getTodoItem(@PathVariable Id id) {
-        return new ResponseEntity<TodoItem>(this.todoService.getTodoItem(id), HttpStatus.OK);
+    private TodoId idStringToTodoId(String idString) {
+        return new TodoId(Integer.parseInt(idString));
     }
 
-    @PostMapping("todo_items/")
+    @GetMapping("/todo_items/{idString}")
+    public ResponseEntity<TodoItem> getTodoItem(@PathVariable String idString) {
+        return new ResponseEntity<TodoItem>(
+                this.todoService.getTodoItem(idStringToTodoId(idString)), HttpStatus.OK);
+    }
+
+    @PostMapping("/todo_items")
     public ResponseEntity<TodoItem> createTodoItem(@Validated @RequestBody TodoItem todoItem) {
         return new ResponseEntity<TodoItem>(this.todoService.createTodoItem(todoItem),
                 HttpStatus.CREATED);
     }
 
-    @PatchMapping("todo_items/{id}")
+    @PatchMapping("/todo_items/{idString}")
     public ResponseEntity<TodoItem> updateTodoItem(@RequestBody TodoItem todoItem,
-            @PathVariable Id id) {
-        return new ResponseEntity<TodoItem>(this.todoService.updateTodoItem(id, todoItem),
+            @PathVariable String idString) {
+        return new ResponseEntity<TodoItem>(
+                this.todoService.updateTodoItem(idStringToTodoId(idString), todoItem),
                 HttpStatus.CREATED);
     }
 
-    @DeleteMapping("todo_items/{id}")
-    public ResponseEntity<HttpStatus> deleteTodoItem(@PathVariable Id id) {
-        this.todoService.deleteTodoItem(id);
+    @DeleteMapping("/todo_items/{idString}")
+    public ResponseEntity<HttpStatus> deleteTodoItem(@PathVariable String idString) {
+        this.todoService.deleteTodoItem(idStringToTodoId(idString));
         return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
     }
 }

@@ -9,29 +9,29 @@ import org.springframework.stereotype.*;
 @Service
 public class TodoService {
     @Autowired
-    private TodoMapper todoRepository;
+    private TodoMapper todoMapper;
 
-    public TodoService(TodoMapper todoRepository) {
-        this.todoRepository = todoRepository;
+    public TodoService(TodoMapper todoMapper) {
+        this.todoMapper = todoMapper;
     }
 
     public List<TodoItem> getTodoItems() {
-        return this.todoRepository.getTodoItems();
+        return this.todoMapper.getTodoItems();
     }
 
-    public TodoItem getTodoItem(Id id) {
-        return this.todoRepository.getTodoItem(id);
+    public TodoItem getTodoItem(TodoId todoId) {
+        return this.todoMapper.getTodoItem(todoId);
     }
 
     public TodoItem createTodoItem(TodoItem todoItem) {
-        return this.todoRepository.createTodoItem(todoItem);
+        return this.todoMapper.createTodoItem(todoItem);
     }
 
-    public TodoItem updateTodoItem(Id id, TodoItem requestTodoItem) {
-        return this.todoRepository.updateTodoItem(id, requestTodoItem);
+    public TodoItem updateTodoItem(TodoId todoId, TodoItem requestTodoItem) {
+        return this.todoMapper.updateTodoItem(todoId, requestTodoItem);
     }
 
-    public void deleteTodoItem(Id id) {
-        this.todoRepository.deleteTodoItem(id);
+    public void deleteTodoItem(TodoId todoId) {
+        this.todoMapper.deleteTodoItem(todoId);
     }
 }

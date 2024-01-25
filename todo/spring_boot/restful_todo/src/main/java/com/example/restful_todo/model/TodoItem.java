@@ -4,7 +4,7 @@ import lombok.*;
 
 @Data
 public class TodoItem {
-    private Id id;
+    private TodoId todoId;
     private Title title;
     private Status status;
     private Details details;
