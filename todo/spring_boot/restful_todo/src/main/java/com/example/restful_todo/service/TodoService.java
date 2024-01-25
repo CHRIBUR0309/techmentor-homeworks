@@ -1,18 +1,37 @@
 package com.example.restful_todo.service;
 
+import com.example.restful_todo.mapper.*;
 import com.example.restful_todo.model.*;
 import java.util.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 
 @Service
-public interface TodoService {
-    List<TodoItem> getTodoItems();
+public class TodoService {
+    @Autowired
+    private TodoMapper todoRepository;
 
-    TodoItem getTodoItem(int id);
+    public TodoService(TodoMapper todoRepository) {
+        this.todoRepository = todoRepository;
+    }
 
-    TodoItem createTodoItem(TodoItem todoItem);
+    public List<TodoItem> getTodoItems() {
+        return this.todoRepository.getTodoItems();
+    }
 
-    TodoItem updateTodoItem(int id, TodoItem requestTodoItem);
+    public TodoItem getTodoItem(Id id) {
+        return this.todoRepository.getTodoItem(id);
+    }
 
-    void deleteTodoItem(int id);
+    public TodoItem createTodoItem(TodoItem todoItem) {
+        return this.todoRepository.createTodoItem(todoItem);
+    }
+
+    public TodoItem updateTodoItem(Id id, TodoItem requestTodoItem) {
+        return this.todoRepository.updateTodoItem(id, requestTodoItem);
+    }
+
+    public void deleteTodoItem(Id id) {
+        this.todoRepository.deleteTodoItem(id);
+    }
 }

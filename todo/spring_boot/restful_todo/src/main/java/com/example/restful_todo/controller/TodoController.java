@@ -3,17 +3,16 @@ package com.example.restful_todo.controller;
 import com.example.restful_todo.model.*;
 import com.example.restful_todo.service.*;
 import java.util.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.validation.annotation.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
 
 public class TodoController {
+    @Autowired
     private final TodoService todoService;
 
     public TodoController(TodoService todoService) {
@@ -26,7 +25,7 @@ public class TodoController {
     }
 
     @GetMapping("todo_items/{id}")
-    public ResponseEntity<TodoItem> getTodoItem(@PathVariable int id) {
+    public ResponseEntity<TodoItem> getTodoItem(@PathVariable Id id) {
         return new ResponseEntity<TodoItem>(this.todoService.getTodoItem(id), HttpStatus.OK);
     }
 
@@ -38,13 +37,13 @@ public class TodoController {
 
     @PatchMapping("todo_items/{id}")
     public ResponseEntity<TodoItem> updateTodoItem(@RequestBody TodoItem todoItem,
-            @PathVariable int id) {
+            @PathVariable Id id) {
         return new ResponseEntity<TodoItem>(this.todoService.updateTodoItem(id, todoItem),
                 HttpStatus.CREATED);
     }
 
     @DeleteMapping("todo_items/{id}")
-    public ResponseEntity<HttpStatus> deleteTodoItem(@PathVariable int id) {
+    public ResponseEntity<HttpStatus> deleteTodoItem(@PathVariable Id id) {
         this.todoService.deleteTodoItem(id);
         return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
     }
