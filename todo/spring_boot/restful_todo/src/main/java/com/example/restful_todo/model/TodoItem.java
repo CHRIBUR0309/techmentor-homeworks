@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Data
+@Entity
 @Table(name = "todo")
 public class TodoItem {
     @Id
