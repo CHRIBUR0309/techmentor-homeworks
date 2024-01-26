@@ -4,5 +4,5 @@ import lombok.*;
 
 @Data
 public class Title {
-    final String title;
+    private final String title;
 }

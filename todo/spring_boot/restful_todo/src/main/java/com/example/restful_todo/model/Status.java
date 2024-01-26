@@ -4,5 +4,5 @@ import lombok.*;
 
 @Data
 public class Status {
-    final String status;
+    private final String status;
 }

@@ -23,12 +23,12 @@ public class TodoService {
         return this.todoMapper.getTodoItem(todoId);
     }
 
-    public TodoItem createTodoItem(TodoItem todoItem) {
-        return this.todoMapper.createTodoItem(todoItem);
+    public TodoItem createTodoItem(Title title, Status status, Details details) {
+        return this.todoMapper.createTodoItem(title, status, details);
     }
 
-    public TodoItem updateTodoItem(TodoId todoId, TodoItem requestTodoItem) {
-        return this.todoMapper.updateTodoItem(todoId, requestTodoItem);
+    public TodoItem updateTodoItem(TodoId todoId, Title title, Status status, Details details) {
+        return this.todoMapper.updateTodoItem(todoId, title, status, details);
     }
 
     public void deleteTodoItem(TodoId todoId) {

@@ -5,14 +5,13 @@ import com.example.restful_todo.service.*;
 import java.util.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
-import org.springframework.validation.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 public class TodoController {
     @Autowired
-    private final TodoService todoService;
+    private TodoService todoService;
 
     public TodoController(TodoService todoService) {
         this.todoService = todoService;
@@ -34,16 +33,19 @@ public class TodoController {
     }
 
     @PostMapping("/todo_items")
-    public ResponseEntity<TodoItem> createTodoItem(@Validated @RequestBody TodoItem todoItem) {
-        return new ResponseEntity<TodoItem>(this.todoService.createTodoItem(todoItem),
-                HttpStatus.CREATED);
+    public ResponseEntity<TodoItem> createTodoItem(@RequestBody String titleString,
+            @RequestBody String statusString, @RequestBody String detailsString) {
+        return new ResponseEntity<TodoItem>(this.todoService.createTodoItem(new Title(titleString),
+                new Status(statusString), new Details(detailsString)), HttpStatus.CREATED);
     }
 
     @PatchMapping("/todo_items/{idString}")
-    public ResponseEntity<TodoItem> updateTodoItem(@RequestBody TodoItem todoItem,
-            @PathVariable String idString) {
+    public ResponseEntity<TodoItem> updateTodoItem(@PathVariable String idString,
+            @RequestBody String titleString, @RequestBody String statusString,
+            @RequestBody String detailsString) {
         return new ResponseEntity<TodoItem>(
-                this.todoService.updateTodoItem(idStringToTodoId(idString), todoItem),
+                this.todoService.updateTodoItem(idStringToTodoId(idString), new Title(titleString),
+                        new Status(statusString), new Details(detailsString)),
                 HttpStatus.CREATED);
     }
 

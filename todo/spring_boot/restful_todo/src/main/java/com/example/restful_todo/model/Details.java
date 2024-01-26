@@ -4,5 +4,5 @@ import lombok.*;
 
 @Data
 public class Details {
-    final String details;
+    private final String details;
 }

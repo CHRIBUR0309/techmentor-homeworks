@@ -4,5 +4,5 @@ import lombok.*;
 
 @Data
 public class TodoId {
-    final int id;
+    private final int id;
 }

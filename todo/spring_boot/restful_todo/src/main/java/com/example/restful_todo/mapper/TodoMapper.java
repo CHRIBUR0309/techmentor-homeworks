@@ -9,15 +9,15 @@ public interface TodoMapper {
     @Select("SELECT * FROM todo")
     List<TodoItem> getTodoItems();
 
-    @Select("SELECT * FROM todo WHERE id = #{id}")
+    @Select("SELECT * FROM todo WHERE id = #{todoId.getId()}")
     TodoItem getTodoItem(TodoId todoId);
 
     @Insert("INSERT INTO todo (title, status, details) VALUES (#{title.getTitle()}, #{status.getStatus()}, #{details.getDetails()})")
-    TodoItem createTodoItem(TodoItem todoItem);
+    TodoItem createTodoItem(Title title, Status status, Details details);
 
-    @Update("UPDATE todo SET title = #{requestTodoItem.getTitle().getTitle()}, status = #{requestTodoItem.getStatus().getStatus()}, details = #{requestTodoItem.getDetails().getDetails()} WHERE id = #{todoId.getId()}")
-    TodoItem updateTodoItem(TodoId todoId, TodoItem requestTodoItem);
+    @Update("UPDATE todo SET title = #{title.getTitle()}, status = #{status.getStatus()}, details = #{details.getDetails()} WHERE id = #{todoId.getId()}")
+    TodoItem updateTodoItem(TodoId todoId, Title title, Status status, Details details);
 
-    @Delete("DELETE FROM todo WHERE id = #{id}")
+    @Delete("DELETE FROM todo WHERE id = #{todoId.getId()}")
     void deleteTodoItem(TodoId todoId);
 }
