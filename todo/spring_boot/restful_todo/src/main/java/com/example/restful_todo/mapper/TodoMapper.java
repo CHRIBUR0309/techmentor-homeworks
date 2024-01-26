@@ -6,18 +6,18 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface TodoMapper {
-    @Select("SELECT * FROM todo")
+    @Select("SELECT * FROM todos")
     List<TodoItem> getTodoItems();
 
-    @Select("SELECT * FROM todo WHERE id = #{todoId.getId()}")
+    @Select("SELECT * FROM todos WHERE id = #{todoId.getId()}")
     TodoItem getTodoItem(TodoId todoId);
 
-    @Insert("INSERT INTO todo (title, status, details) VALUES (#{title.getTitle()}, #{status.getStatus()}, #{details.getDetails()})")
+    @Insert("INSERT INTO todos (title, status, details) VALUES (#{title.getTitle()}, #{status.getStatus()}, #{details.getDetails()})")
     TodoItem createTodoItem(Title title, Status status, Details details);
 
-    @Update("UPDATE todo SET title = #{title.getTitle()}, status = #{status.getStatus()}, details = #{details.getDetails()} WHERE id = #{todoId.getId()}")
+    @Update("UPDATE todos SET title = #{title.getTitle()}, status = #{status.getStatus()}, details = #{details.getDetails()} WHERE id = #{todoId.getId()}")
     TodoItem updateTodoItem(TodoId todoId, Title title, Status status, Details details);
 
-    @Delete("DELETE FROM todo WHERE id = #{todoId.getId()}")
+    @Delete("DELETE FROM todos WHERE id = #{todoId.getId()}")
     void deleteTodoItem(TodoId todoId);
 }
