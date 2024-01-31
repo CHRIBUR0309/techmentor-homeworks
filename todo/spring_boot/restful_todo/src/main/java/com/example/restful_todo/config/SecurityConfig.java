@@ -1,5 +1,6 @@
 package com.example.restful_todo.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.*;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.*;
@@ -17,9 +18,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.formLogin(login -> login.loginProcessingUrl("/todo_items/sign_in")
-                .loginPage("/todo_items/sign_in").defaultSuccessUrl("/todo_items")
-                .failureUrl("/todo_items/sign_in?error").permitAll());
+        httpSecurity
+                .formLogin(login -> login.loginProcessingUrl("/todo_items/sign_in")
+                        .loginPage("/todo_items/sign_in").defaultSuccessUrl("/todo_items")
+                        .failureUrl("/todo_items/sign_in?error").permitAll())
+                .logout(logout -> logout.logoutSuccessUrl("/todo_items/sign_in"))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                        .permitAll().requestMatchers("/").permitAll().requestMatchers("/todo_items")
+                        .permitAll().requestMatchers("/todo_items").permitAll().anyRequest()
+                        .authenticated());
         return httpSecurity.build();
     }
 }

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link th:href="@{/css/reset.css}" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans@wght:100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <title>Todo Items Top Page</title>
+  </head>
+  <body>
+    <h1>Todo Items Top Page</h1>
+    <ul>
+      <li><a th:href="@{todo_items/sign_in}">Sign in</a></li>
+      <li><a th:href="@{todo_items/sign_up}">Sign up</a></li>
+      <li>
+        <a th:href="@{todo_items/change_password}">Change password</a>
+      </li>
+      <li>
+        <a th:href="@{todo_items/delete_account}">Delete account</a>
+      </li>
+    </ul>
+  </body>
+</html>

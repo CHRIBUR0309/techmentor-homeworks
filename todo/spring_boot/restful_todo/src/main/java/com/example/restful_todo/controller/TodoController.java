@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-
+@RequestMapping("/")
 @RestController
 public class TodoController {
     @Autowired

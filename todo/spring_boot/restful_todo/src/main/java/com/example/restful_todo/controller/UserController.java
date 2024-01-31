@@ -7,7 +7,6 @@ import org.springframework.http.*;
 import org.springframework.security.crypto.password.*;
 import org.springframework.web.bind.annotation.*;
 
-
 @RequestMapping("/")
 @RestController
 public class UserController {
