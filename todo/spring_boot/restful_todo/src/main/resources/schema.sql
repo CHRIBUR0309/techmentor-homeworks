@@ -1,38 +1,4 @@
 BEGIN
-;
-
-CREATE TABLE IF NOT EXISTS
-    users (
-        user_id TEXT
-            PRIMARY KEY
-        , password TEXT
-            NOT NULL
-    )
-;
-
-CREATE TABLE IF NOT EXISTS
-    todos (
-        todo_id SERIAL
-            PRIMARY KEY
-        , user_id TEXT
-            REFERENCES
-                users
-            ON DELETE CASCADE
-        , status TEXT
-            CONSTRAINT
-                check_status
-            CHECK (
-                status IN (
-                    'Unprocessed'
-                    , 'Proceeding'
-                    , 'Finished'
-                )
-            )
-        , details TEXT
-            NOT NULL
-            DEFAULT ''
-    )
-;
-
-COMMIT
-;
+    ; CREATE TABLE IF NOT EXISTS USERS ( USER_ID TEXT PRIMARY KEY, PASSWORD TEXT NOT NULL );
+    CREATE TABLE IF NOT EXISTS TODOS ( TODO_ID SERIAL PRIMARY KEY, USER_ID TEXT REFERENCES USERS ON DELETE CASCADE, TITLE TEXT NOT NULL, STATUS TEXT CONSTRAINT CHECK_STATUS CHECK ( STATUS IN ( 'Unprocessed', 'Proceeding', 'Finished' ) ), DETAILS TEXT NOT NULL DEFAULT '' );
+    COMMIT;

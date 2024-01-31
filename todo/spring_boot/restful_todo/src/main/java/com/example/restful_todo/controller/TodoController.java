@@ -17,41 +17,49 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-    @GetMapping("/todo_items")
-    public ResponseEntity<List<TodoItem>> getTodoItems() {
-        return new ResponseEntity<List<TodoItem>>(this.todoService.getTodoItems(), HttpStatus.OK);
+    @GetMapping("/todo_items/{userIdString}")
+    public ResponseEntity<List<TodoItem>> getTodoItems(@PathVariable String userIdString) {
+        return new ResponseEntity<List<TodoItem>>(
+                this.todoService.getTodoItems(new UserId(userIdString)), HttpStatus.OK);
     }
 
-    private TodoId idStringToTodoId(String idString) {
-        return new TodoId(Integer.parseInt(idString));
+    private TodoId todoIdStringToTodoId(String todoIdString) {
+        return new TodoId(Integer.parseInt(todoIdString));
     }
 
-    @GetMapping("/todo_items/{idString}")
-    public ResponseEntity<TodoItem> getTodoItem(@PathVariable String idString) {
-        return new ResponseEntity<TodoItem>(
-                this.todoService.getTodoItem(idStringToTodoId(idString)), HttpStatus.OK);
+    @GetMapping("/todo_items/{userIdString}/{todoIdString}")
+    public ResponseEntity<TodoItem> getTodoItem(@PathVariable String todoIdString,
+            @PathVariable String userIdString) {
+        return new ResponseEntity<TodoItem>(this.todoService.getTodoItem(
+                todoIdStringToTodoId(todoIdString), new UserId(userIdString)), HttpStatus.OK);
     }
 
-    @PostMapping("/todo_items")
-    public ResponseEntity<TodoItem> createTodoItem(@RequestBody String titleString,
-            @RequestBody String statusString, @RequestBody String detailsString) {
-        return new ResponseEntity<TodoItem>(this.todoService.createTodoItem(new Title(titleString),
-                new Status(statusString), new Details(detailsString)), HttpStatus.CREATED);
-    }
-
-    @PatchMapping("/todo_items/{idString}")
-    public ResponseEntity<TodoItem> updateTodoItem(@PathVariable String idString,
+    @PostMapping("/todo_items/{userIdString}")
+    public ResponseEntity<TodoItem> createTodoItem(@PathVariable String userIdString,
             @RequestBody String titleString, @RequestBody String statusString,
             @RequestBody String detailsString) {
         return new ResponseEntity<TodoItem>(
-                this.todoService.updateTodoItem(idStringToTodoId(idString), new Title(titleString),
+                this.todoService.createTodoItem(new UserId(userIdString), new Title(titleString),
                         new Status(statusString), new Details(detailsString)),
                 HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/todo_items/{idString}")
-    public ResponseEntity<HttpStatus> deleteTodoItem(@PathVariable String idString) {
-        this.todoService.deleteTodoItem(idStringToTodoId(idString));
+    @PatchMapping("/todo_items/{userIdString}/{todoIdString}")
+    public ResponseEntity<TodoItem> updateTodoItem(@PathVariable String todoIdString,
+            @PathVariable String userIdString, @RequestBody String titleString,
+            @RequestBody String statusString, @RequestBody String detailsString) {
+        return new ResponseEntity<TodoItem>(
+                this.todoService.updateTodoItem(todoIdStringToTodoId(todoIdString),
+                        new UserId(userIdString), new Title(titleString), new Status(statusString),
+                        new Details(detailsString)),
+                HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/todo_items/{userIdString}/{todoIdString}")
+    public ResponseEntity<HttpStatus> deleteTodoItem(@PathVariable String todoIdString,
+            @PathVariable String userIdString) {
+        this.todoService.deleteTodoItem(todoIdStringToTodoId(todoIdString),
+                new UserId(userIdString));
         return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
     }
 }
