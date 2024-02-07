@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link th:href="@{/css/reset.css}" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <title>Todo Items Top Page</title>
+  </head>
+  <body>
+    <header>
+      <h1>Todo Items Top Page</h1>
+    </header>
+    <main>
+      <h2>Get All Items</h2>
+      <form th:action="@{/get}" th:object="${todoItems}" method="get">
+        <div>
+          <input type="submit" value="Get all items" />
+        </div>
+      </form>
+      <h2>Get Item</h2>
+      <form th:action="@{/get/{var0}(var0=${todoId})}" method="get">
+        <div>
+          <label for="todoId">ID</label>
+          <input type="text" th:field="${todoId}" id="todoId" />
+        </div>
+        <div>
+          <input type="submit" value="Get Item" />
+        </div>
+      </form>
+      <h2>Insert Item without Details</h2>
+      <form
+        th:action="@{/post/{var1}/{var2}(var1=${title},var2=${status})}"
+        method="post"
+      >
+        <div>
+          <label for="title">Title</label>
+          <input type="text" th:field="${title}" id="title" />
+        </div>
+        <div>
+          <label for="status">Status</label>
+          <input type="text" th:field="${status}" id="status" />
+        </div>
+        <div>
+          <input type="submit" value="Insert Item without Details" />
+        </div>
+      </form>
+      <h2>Insert Item with Details</h2>
+      <form
+        th:action="@{/post/{var1}/{var2}/{var3}(var1=${title},var2=${status},var3=${details})}"
+        method="post"
+      >
+        <div>
+          <label for="title">Title</label>
+          <input type="text" th:field="${title}" id="title" />
+        </div>
+        <div>
+          <label for="status">Status</label>
+          <input type="text" th:field="${status}" id="status" />
+        </div>
+        <div>
+          <label for="details">Details</label>
+          <input type="textarea" th:field="${details}" id="details" />
+        </div>
+        <div>
+          <input type="submit" value="Insert Item with Details" />
+        </div>
+      </form>
+      <h2>Update Item</h2>
+      <form
+        th:action="@{/patch/{var0}/{var1}/{var2}/{var3}(var0=${todoId},var1=${title},var2=${status},var3=${details})}"
+        method="post"
+      >
+        <div>
+          <label for="todoId">ID</label>
+          <input type="text" th:field="${todoId}" id="todoId" />
+        </div>
+        <div>
+          <label for="title">Title</label>
+          <input type="text" th:field="${title}" id="title" />
+        </div>
+        <div>
+          <label for="status">Status</label>
+          <input type="text" th:field="${status}" id="status" />
+        </div>
+        <div>
+          <label for="details">Details</label>
+          <input type="textarea" th:field="${details}" id="details" />
+        </div>
+        <div>
+          <input type="submit" value="Update Item" />
+        </div>
+      </form>
+      <h2>Delete Item</h2>
+      <form th:action="@{/delete/{var0}(var0=${todoId})}" method="post">
+        <div>
+          <label for="todoId">ID</label>
+          <input type="text" th:field="${todoId}" id="todoId" />
+        </div>
+        <div>
+          <input type="submit" value="Get Item" />
+        </div>
+      </form>
+    </main>
+    <footer>Sakai</footer>
+  </body>
+</html>

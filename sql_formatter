@@ -1,0 +1,3 @@
+#! /bin/bash
+npx sql-formatter ./todo/spring_boot/restful_todo/src/main/resources/schema.sql -c ./sql_formatter_config01.json -o ./todo/spring_boot/restful_todo/src/main/resources/schema.sql
+npx sql-formatter ./todo/spring_boot/restful_todo/src/main/resources/schema.sql -c ./sql_formatter_config02.json -o ./todo/spring_boot/restful_todo/src/main/resources/schema.sql

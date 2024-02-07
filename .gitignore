@@ -5,6 +5,8 @@
 .git/*
 
 .mise.toml
+node_modules
+node_modules/*
 
 ### Java ###
 # Compiled class file
