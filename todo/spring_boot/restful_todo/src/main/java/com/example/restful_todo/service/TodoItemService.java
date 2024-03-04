@@ -17,7 +17,7 @@ public class TodoItemService {
         return todoItemMapper.getAllItems();
     }
 
-    public TodoItem getItem(long todoId) {
+    public TodoItem getItem(String todoId) {
         return todoItemMapper.getItem(todoId);
     }
 
@@ -35,7 +35,7 @@ public class TodoItemService {
                 todoItem.getDetails());
     }
 
-    public void deleteItem(long todoId) {
+    public void deleteItem(String todoId) {
         todoItemMapper.deleteItem(todoId);
     }
 }

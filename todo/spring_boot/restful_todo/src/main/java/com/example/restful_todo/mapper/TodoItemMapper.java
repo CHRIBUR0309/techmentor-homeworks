@@ -8,13 +8,13 @@ import com.example.restful_todo.model.*;
 public interface TodoItemMapper {
     List<TodoItem> getAllItems();
 
-    TodoItem getItem(long todoId);
+    TodoItem getItem(String todoId);
 
     void insertItemWithoutDetails(String title, String status);
 
     void insertItemWithDetails(String title, String status, String details);
 
-    void updateItem(long todoId, String title, String status, String details);
+    void updateItem(String todoId, String title, String status, String details);
 
-    void deleteItem(long todoId);
+    void deleteItem(String todoId);
 }

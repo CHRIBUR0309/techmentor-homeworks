@@ -18,29 +18,29 @@ public class TodoController {
     }
 
     @GetMapping("/get/{todoId}")
-    public TodoItem getItem(@PathVariable long todoId) {
+    public TodoItem getItem(@PathVariable String todoId) {
         return todoItemService.getItem(todoId);
     }
 
     @PostMapping("/post/{title}/{status}")
     public void insertItemWithoutDetails(@PathVariable String title, @PathVariable String status) {
-        todoItemService.insertItem(new TodoItem(0, title, status, ""));
+        todoItemService.insertItem(new TodoItem("", title, status, ""));
     }
 
     @PostMapping("/post/{title}/{status}/{details}")
     public void insertItemWithDetails(@PathVariable String title, @PathVariable String status,
             @PathVariable String details) {
-        todoItemService.insertItem(new TodoItem(0, title, status, details));
+        todoItemService.insertItem(new TodoItem("", title, status, details));
     }
 
     @PatchMapping("/patch/{todoId}/{title}/{status}/{details}")
-    public void updateItem(@PathVariable long todoId, @PathVariable String title,
+    public void updateItem(@PathVariable String todoId, @PathVariable String title,
             @PathVariable String status, @PathVariable String details) {
         todoItemService.updateItem(new TodoItem(todoId, title, status, details));
     }
 
     @DeleteMapping("/delete/{todoId}")
-    public void updateItem(@PathVariable long todoId) {
+    public void updateItem(@PathVariable String todoId) {
         todoItemService.deleteItem(todoId);
     }
 }

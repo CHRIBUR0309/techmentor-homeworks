@@ -5,8 +5,8 @@ import lombok.*;
 
 @Data
 public class TodoItem {
-    @PositiveOrZero
-    private final long todoId;
+    @NotBlank
+    private final String todoId;
     @NotBlank
     private final String title;
     @Pattern(regexp = "(Unprocessed|Proceeding|Finished)")
