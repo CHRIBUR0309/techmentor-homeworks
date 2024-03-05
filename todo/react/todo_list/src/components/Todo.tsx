@@ -100,6 +100,7 @@ const Todo = ({
               <input id=`${todoId}_${status}` className="" type="radio" name='status' />
             )})}
           </div>
+        </fieldset>
           <input
             id={`${todoId}_${details}`}
             className=""
@@ -108,7 +109,6 @@ const Todo = ({
             onChange={handleChange}
             ref={editFieldRef}
           />
-        </fieldset>
       </div>
       <div className="">
         <button type="button" className="" onClick={() => setEditing(false)}>
