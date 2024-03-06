@@ -52,10 +52,10 @@ const App = ({ propTodoItems }: { propTodoItems: TodoItem[] }) => {
     setTodoItems(editedTodoItemList);
   };
 
-  const toggleTodoItemCompleted = (todoId: string) => {
+  const changeTodoItemStatus = (todoId: string, changedStatus: Status) => {
     const updatedTodoItems = todoItems.map((todoItem: TodoItem) => {
       if (todoId === todoItem.todoId) {
-        return { ...todoItem, status: !todoItem.status };
+        return { ...todoItem, status: changedStatus };
       }
       return todoItem;
     });
@@ -76,8 +76,9 @@ const App = ({ propTodoItems }: { propTodoItems: TodoItem[] }) => {
         todoId={todoItem.todoId}
         title={todoItem.title}
         status={todoItem.status}
+        details={todoItem.details}
         key={todoItem.todoId}
-        toggleTodoItemCompleted={toggleTodoItemCompleted}
+        changeTodoItemStatus={changeTodoItemStatus}
         deleteTodoItem={deleteTodoItem}
         editTodoItem={editTodoItem}
       />
@@ -109,8 +110,8 @@ const App = ({ propTodoItems }: { propTodoItems: TodoItem[] }) => {
       <h2 id="list-heading" tabIndex={-1} ref={listHeadingRef}>
         {headingText}
       </h2>
-      <ul role="list" className=""list-heading">
-        {todoItemList}
+      <ul role="list" className="list-heading">
+        {filteredTodoItemList}
       </ul>
     </div>
   );

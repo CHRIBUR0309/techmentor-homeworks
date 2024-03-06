@@ -21,7 +21,7 @@ const Todo = ({
   status,
   details,
   key,
-  toggleTodoItemCompleted,
+  changeTodoItemStatus,
   deleteTodoItem,
   editTodoItem,
 }: {
@@ -30,7 +30,7 @@ const Todo = ({
   status: Status;
   details: string;
   key: string;
-  toggleTodoItemCompleted: (todoId: string) => void;
+  changeTodoItemStatus: (todoId: string, changedStatus: Status) => void;
   deleteTodoItem: (todoId: string) => void;
   editTodoItem: (todoId: string, newTitle: string) => void;
 }) => {
@@ -51,6 +51,29 @@ const Todo = ({
       value: 'Finished',
     },
   ];
+
+  const RadioButtons = () => {
+    return statusRadioButtons.map((radio) => {
+      return (
+        <>
+          <input
+            id={`${todoId}_${status}`}
+            className=""
+            type="radio"
+            name="status"
+            value={radio.value}
+            checked={radio.value === newStatus}
+            defaultChecked={radio.value === 'Unprocessed'}
+            onChange={handleChange}
+            ref={editFieldRef}
+          />
+          <label className="" htmlFor={`${todoId}_${status}`}>
+            {radio.buttonLabel}
+          </label>
+        </>
+      );
+    });
+  };
 
   const [newDetails, setNewDetails] = useState('');
   const editFieldRef = useRef<HTMLInputElement>(null);
@@ -81,34 +104,23 @@ const Todo = ({
           onChange={handleChange}
           ref={editFieldRef}
         />
-        <label className="" htmlFor={`${todoId}_${status}`}>
-          タイトル
-        </label>
-        <input
-          id={`${todoId}_${status}`}
-          className=""
-          type="radio"
-          value={newStatus}
-          onChange={handleChange}
-          ref={editFieldRef}
-        />
         <fieldset className="">
           <legend className="">ステータス</legend>
           <div className="">
-            {statusRadioButtons.map((radio) => {
-              return (
-              <input id=`${todoId}_${status}` className="" type="radio" name='status' />
-            )})}
+            <RadioButtons />
           </div>
         </fieldset>
-          <input
-            id={`${todoId}_${details}`}
-            className=""
-            type="textarea"
-            value={newDetails}
-            onChange={handleChange}
-            ref={editFieldRef}
-          />
+        <label className="" htmlFor={`${todoId}_${details}`}>
+          詳細
+        </label>
+        <input
+          id={`${todoId}_${details}`}
+          className=""
+          type="textarea"
+          value={newDetails}
+          onChange={handleChange}
+          ref={editFieldRef}
+        />
       </div>
       <div className="">
         <button type="button" className="" onClick={() => setEditing(false)}>
@@ -123,17 +135,10 @@ const Todo = ({
     </form>
   );
   const viewTemplate = (
-    <div className="">
+    <>
       <div className="">
-        <input
-          id={todoId}
-          type="checkbox"
-          defaultChecked={status}
-          onChange={() => toggleTodoItemCompleted(todoId)}
-        />
-        <label className="" htmlFor={todoId}>
-          {title}
-        </label>
+        <div className="">{title}</div>
+        <RadioButtons />
       </div>
       <div className="">
         <button
@@ -152,7 +157,7 @@ const Todo = ({
           削除 <span className="">{title}</span>
         </button>
       </div>
-    </div>
+    </>
   );
   const wasEditing = usePrevious(isEditing);
   useEffect(() => {
