@@ -1,11 +1,14 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+
+const config = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {},
     fontFamily: {
-      noto: ['Noto Sans', 'Noto Sans JP', 'Noto Color Emoji', 'sans-serif'],
-    },
+      noto: ['Noto Sans', 'Noto Sans JP', 'Noto Color Emoji', 'sans-serif']
+    }
   },
-  plugins: [],
+  plugins: []
 };
+
+export default config;

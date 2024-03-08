@@ -1,18 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'the-new-css-reset/css/reset.css';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { TodoItem } from '../public/types/Types';
+import { type TodoItem } from '../public/types/Types';
+import './index.css';
 
 const todoItems: TodoItem[] = [];
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement,
-);
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error('Failed to find the root element.');
+}
+const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <App propTodoItems={todoItems} />
-  </React.StrictMode>,
+  </React.StrictMode>
 );
-reportWebVitals(console.log);

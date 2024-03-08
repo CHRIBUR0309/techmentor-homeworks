@@ -1,13 +1,9 @@
-import React from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { Status } from '../../public/types/Types';
+import React, { useEffect, useRef, useState } from 'react';
+import RadioButtons from './RadioButtons';
+import { type Status } from '../../public/types/Types';
+import '../index.css';
 
-type StatusRadioButtonObject = {
-  buttonLabel: string;
-  value: Status;
-};
-
-const usePrevious = (value: boolean) => {
+const usePrevious = (value: boolean): boolean => {
   const ref = useRef(false);
   useEffect(() => {
     ref.current = value;
@@ -15,75 +11,27 @@ const usePrevious = (value: boolean) => {
   return ref.current;
 };
 
-const Todo = ({
-  todoId,
-  title,
-  status,
-  details,
-  key,
-  changeTodoItemStatus,
-  deleteTodoItem,
-  editTodoItem,
-}: {
+const Todo: React.FC<{
   todoId: string;
   title: string;
   status: Status;
   details: string;
-  key: string;
-  changeTodoItemStatus: (todoId: string, changedStatus: Status) => void;
   deleteTodoItem: (todoId: string) => void;
   editTodoItem: (todoId: string, newTitle: string) => void;
-}) => {
+}> = ({ todoId, title, status, details, deleteTodoItem, editTodoItem }) => {
   const [isEditing, setEditing] = useState(false);
   const [newTitle, setNewTitle] = useState('');
-  const [newStatus, setNewStatus] = useState<Status>('Unprocessed');
-  const statusRadioButtons: StatusRadioButtonObject[] = [
-    {
-      buttonLabel: '未着手',
-      value: 'Unprocessed',
-    },
-    {
-      buttonLabel: '進行中',
-      value: 'Proceeding',
-    },
-    {
-      buttonLabel: '完了',
-      value: 'Finished',
-    },
-  ];
+  const newStatus = useState<Status>('Unprocessed')[0];
 
-  const RadioButtons = () => {
-    return statusRadioButtons.map((radio) => {
-      return (
-        <>
-          <input
-            id={`${todoId}_${status}`}
-            className=""
-            type="radio"
-            name="status"
-            value={radio.value}
-            checked={radio.value === newStatus}
-            defaultChecked={radio.value === 'Unprocessed'}
-            onChange={handleChange}
-            ref={editFieldRef}
-          />
-          <label className="" htmlFor={`${todoId}_${status}`}>
-            {radio.buttonLabel}
-          </label>
-        </>
-      );
-    });
-  };
-
-  const [newDetails, setNewDetails] = useState('');
+  const newDetails = useState('')[0];
   const editFieldRef = useRef<HTMLInputElement>(null);
   const editButtonRef = useRef<HTMLButtonElement>(null);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setNewTitle(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     editTodoItem(todoId, newTitle);
     setNewTitle('');
@@ -107,7 +55,13 @@ const Todo = ({
         <fieldset className="">
           <legend className="">ステータス</legend>
           <div className="">
-            <RadioButtons />
+            <RadioButtons
+              todoId={todoId}
+              status={status}
+              newStatus={newStatus}
+              handleChange={handleChange}
+              editFieldRef={editFieldRef}
+            />
           </div>
         </fieldset>
         <label className="" htmlFor={`${todoId}_${details}`}>
@@ -123,7 +77,13 @@ const Todo = ({
         />
       </div>
       <div className="">
-        <button type="button" className="" onClick={() => setEditing(false)}>
+        <button
+          type="button"
+          className=""
+          onClick={() => {
+            setEditing(false);
+          }}
+        >
           キャンセル
           <span className="">タイトル変更 {title}</span>
         </button>
@@ -138,13 +98,21 @@ const Todo = ({
     <>
       <div className="">
         <div className="">{title}</div>
-        <RadioButtons />
+        <RadioButtons
+          todoId={todoId}
+          status={status}
+          newStatus={newStatus}
+          handleChange={handleChange}
+          editFieldRef={editFieldRef}
+        />
       </div>
       <div className="">
         <button
           type="button"
           className=""
-          onClick={() => setEditing(true)}
+          onClick={() => {
+            setEditing(true);
+          }}
           ref={editButtonRef}
         >
           編集 <span className="">{title}</span>
@@ -152,7 +120,9 @@ const Todo = ({
         <button
           type="button"
           className=""
-          onClick={() => deleteTodoItem(todoId)}
+          onClick={() => {
+            deleteTodoItem(todoId);
+          }}
         >
           削除 <span className="">{title}</span>
         </button>

@@ -1,11 +1,17 @@
-import React from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { Status, StatusFilterKey, TodoItem } from '../public/types/Types';
+import now from '../public/utilities/now';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  type Status,
+  type StatusFilterKey,
+  type TodoItem
+} from '../public/types/Types';
 import FilterButton from './components/FilterButton';
 import Form from './components/Form';
+import Header from './components/Header';
 import Todo from './components/Todo';
+import './index.css';
 
-const usePrevious = (value: number) => {
+const usePrevious = (value: number): number => {
   const ref = useRef(0);
   useEffect(() => {
     ref.current = value;
@@ -14,35 +20,40 @@ const usePrevious = (value: number) => {
 };
 
 const FILTER_MAP: Record<StatusFilterKey, (todoItem: TodoItem) => boolean> = {
-  All: (todoItem: TodoItem) => true,
+  All: (_: TodoItem) => true,
   Unprocessed: (todoItem: TodoItem) => todoItem.status === 'Unprocessed',
   Proceeding: (todoItem: TodoItem) => todoItem.status === 'Proceeding',
-  Finished: (todoItem: TodoItem) => todoItem.status === 'Finished',
+  Finished: (todoItem: TodoItem) => todoItem.status === 'Finished'
 };
-const FILTER_NAMES = Object.keys(FILTER_MAP);
 
-const App = ({ propTodoItems }: { propTodoItems: TodoItem[] }) => {
+const getKeys = <T extends Record<string, unknown>>(obj: T): Array<keyof T> => {
+  return Object.keys(obj);
+};
+
+const FILTER_NAMES = getKeys(FILTER_MAP);
+
+const App: React.FC<{ propTodoItems: TodoItem[] }> = ({ propTodoItems }) => {
   const [todoItems, setTodoItems] = useState(propTodoItems);
   const [filter, setFilter]: [
     filter: StatusFilterKey,
-    setFilter: React.Dispatch<React.SetStateAction<StatusFilterKey>>,
+    setFilter: React.Dispatch<React.SetStateAction<StatusFilterKey>>
   ] = useState<StatusFilterKey>('All');
 
   const addTodoItem = (
     title: string,
     status: Status = 'Unprocessed',
-    details: string = '',
-  ) => {
+    details: string = ''
+  ): void => {
     const newTodoItem: TodoItem = {
       todoId: `todo-${crypto.randomUUID()}`,
       title,
       status,
-      details,
+      details
     };
     setTodoItems([...todoItems, newTodoItem]);
   };
 
-  const editTodoItem = (todoId: string, newTitle: string) => {
+  const editTodoItem = (todoId: string, newTitle: string): void => {
     const editedTodoItemList = todoItems.map((todoItem: TodoItem) => {
       if (todoId === todoItem.todoId) {
         return { ...todoItem, title: newTitle };
@@ -52,47 +63,36 @@ const App = ({ propTodoItems }: { propTodoItems: TodoItem[] }) => {
     setTodoItems(editedTodoItemList);
   };
 
-  const changeTodoItemStatus = (todoId: string, changedStatus: Status) => {
-    const updatedTodoItems = todoItems.map((todoItem: TodoItem) => {
-      if (todoId === todoItem.todoId) {
-        return { ...todoItem, status: changedStatus };
-      }
-      return todoItem;
-    });
-    setTodoItems(updatedTodoItems);
-  };
-
-  const deleteTodoItem = (todoId: string) => {
+  const deleteTodoItem = (todoId: string): void => {
     const remainingTodoItems = todoItems.filter(
-      (todoItem: TodoItem) => todoId !== todoItem.todoId,
+      (todoItem: TodoItem) => todoId !== todoItem.todoId
     );
     setTodoItems(remainingTodoItems);
   };
 
   const filteredTodoItemList = todoItems
     .filter(FILTER_MAP[filter])
-    .map((todoItem: TodoItem) => (
+    .map((todoItem: TodoItem, i) => (
       <Todo
+        key={`(todoItems.filter(FILTER_MAP[${filter}]))[${i}]_${now()}`}
         todoId={todoItem.todoId}
         title={todoItem.title}
         status={todoItem.status}
         details={todoItem.details}
-        key={todoItem.todoId}
-        changeTodoItemStatus={changeTodoItemStatus}
         deleteTodoItem={deleteTodoItem}
         editTodoItem={editTodoItem}
       />
     ));
-  const filterList = FILTER_NAMES.map((title) => (
+  const filterList = FILTER_NAMES.map((statusFilter, i) => (
     <FilterButton
-      key={title}
-      title={title}
-      isPressed={title === filter}
+      key={`FILTER_NAMES[${i}]_${now()}`}
+      statusFilter={statusFilter}
+      isPressed={statusFilter === filter}
       setFilter={setFilter}
     />
   ));
   const headingText =
-    filteredTodoItemList.length == 0
+    filteredTodoItemList.length === 0
       ? 'Todoリストは空です。'
       : `${filteredTodoItemList.length}個のTodoアイテムがあります。`;
   const listHeadingRef = useRef<HTMLHeadingElement>(null);
@@ -103,14 +103,14 @@ const App = ({ propTodoItems }: { propTodoItems: TodoItem[] }) => {
     }
   }, [todoItems.length, prevTodoItemLength]);
   return (
-    <div className="">
-      <h1>Todoリスト</h1>
+    <div className="mx-auto w-5/6 font-noto font-normal">
+      <Header h1Text="Todoリスト" />
       <Form addTodoItem={addTodoItem} />
       <div className="">{filterList}</div>
       <h2 id="list-heading" tabIndex={-1} ref={listHeadingRef}>
         {headingText}
       </h2>
-      <ul role="list" className="list-heading">
+      <ul role="list" className="">
         {filteredTodoItemList}
       </ul>
     </div>

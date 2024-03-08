@@ -1,26 +1,23 @@
 import React from 'react';
-import { StatusFilterKey } from '../../public/types/Types';
+import { type StatusFilterKey } from '../../public/types/Types';
+import '../index.css';
 
-const FilterButton = ({
-  key,
-  title,
-  isPressed,
-  setFilter,
-}: {
-  key: string;
-  title: string;
+const FilterButton: React.FC<{
+  statusFilter: StatusFilterKey;
   isPressed: boolean;
   setFilter: React.Dispatch<React.SetStateAction<StatusFilterKey>>;
-}) => {
+}> = ({ statusFilter, isPressed, setFilter }) => {
   return (
     <button
       type="button"
       className=""
       aria-pressed={isPressed}
-      onClick={() => setFilter(title)}
+      onClick={() => {
+        setFilter(statusFilter);
+      }}
     >
       <span className="">表示 </span>
-      <span>{title}</span>
+      <span>{statusFilter}</span>
       <span className=""> Todoリスト</span>
     </button>
   );

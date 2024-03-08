@@ -1,17 +1,15 @@
-import React from 'react';
-import { useState } from 'react';
-import { Status } from '../../public/types/Types';
+import React, { useState } from 'react';
+import { type Status } from '../../public/types/Types';
+import '../index.css';
 
-const Form = ({
-  addTodoItem,
-}: {
+const Form: React.FC<{
   addTodoItem: (title: string, status: Status, details: string) => void;
-}) => {
+}> = ({ addTodoItem }) => {
   const [title, setTitle] = useState('');
   const [status, setStatus] = useState<Status>('Unprocessed');
   const [details, setDetails] = useState('');
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     addTodoItem(title, status, details);
     setTitle('');
@@ -19,7 +17,7 @@ const Form = ({
     setDetails('');
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setTitle(event.target.value);
   };
 
