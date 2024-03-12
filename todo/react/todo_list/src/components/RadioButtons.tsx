@@ -28,32 +28,36 @@ const RadioButtons: React.FC<{
   status: Status;
   newStatus: Status;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  editFieldRef: React.RefObject<HTMLInputElement>;
-}> = ({ todoId, status, newStatus, handleChange, editFieldRef }) => {
+  ref?: React.RefObject<HTMLInputElement>;
+}> = ({ todoId, status, newStatus, handleChange, ref }) => {
   return (
     <>
       {statusRadioButtons.map((radio, i) => {
         const nowDateTime = now();
+        const htmlFor = `${todoId}_${status}_${radio.value}_${nowDateTime}`;
+        const className =
+          'h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600';
         return (
-          <div className="" key={`statusRadioButtons[${i}]_${nowDateTime}`}>
+          <div
+            className="flex items-center"
+            key={`statusRadioButtons[${i}]_${nowDateTime}`}
+          >
             <input
-              id={`${todoId}_${status}_${nowDateTime}`}
-              className=""
+              id={htmlFor}
+              className={className}
               type="radio"
               name="status"
               value={radio.value}
-              checked={radio.value === newStatus}
               defaultChecked={radio.value === 'Unprocessed'}
               onChange={handleChange}
-              ref={editFieldRef}
+              ref={ref}
             />
-            <label className="" htmlFor={`${todoId}_${status}_${nowDateTime}`}>
+            <label className="" htmlFor={htmlFor}>
               {radio.buttonLabel}
             </label>
           </div>
         );
       })}
-      ;
     </>
   );
 };

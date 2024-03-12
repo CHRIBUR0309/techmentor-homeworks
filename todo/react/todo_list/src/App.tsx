@@ -107,7 +107,7 @@ const App: React.FC<{ propTodoItems: TodoItem[] }> = ({ propTodoItems }) => {
       <Header h1Text="Todoリスト" />
       <Form addTodoItem={addTodoItem} />
       <div className="">{filterList}</div>
-      <h2 id="list-heading" tabIndex={-1} ref={listHeadingRef}>
+      <h2 tabIndex={-1} ref={listHeadingRef}>
         {headingText}
       </h2>
       <ul role="list" className="">

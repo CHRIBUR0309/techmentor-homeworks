@@ -1,4 +1,5 @@
 import React from 'react';
+import AbstractButton from './AbstractButton';
 import { type StatusFilterKey } from '../../public/types/Types';
 import '../index.css';
 
@@ -8,18 +9,21 @@ const FilterButton: React.FC<{
   setFilter: React.Dispatch<React.SetStateAction<StatusFilterKey>>;
 }> = ({ statusFilter, isPressed, setFilter }) => {
   return (
-    <button
-      type="button"
-      className=""
-      aria-pressed={isPressed}
-      onClick={() => {
-        setFilter(statusFilter);
-      }}
-    >
-      <span className="">表示 </span>
-      <span>{statusFilter}</span>
-      <span className=""> Todoリスト</span>
-    </button>
+    <>
+      <AbstractButton
+        buttonLabel={
+          <div className="">
+            <span>{`${statusFilter}　表示`}</span>
+          </div>
+        }
+        buttonKind="filter"
+        buttonType="button"
+        ariaPressed={isPressed}
+        onClick={() => {
+          setFilter(statusFilter);
+        }}
+      />
+    </>
   );
 };
 

@@ -1,11 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 
 const config = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
+  corePlugins: {
+    preflight: false
+  },
   theme: {
     extend: {},
     fontFamily: {
-      noto: ['Noto Sans', 'Noto Sans JP', 'Noto Color Emoji', 'sans-serif']
+      noto: [
+        '"Noto Sans"',
+        '"Noto Sans JP"',
+        '"Noto Color Emoji"',
+        'sans-serif'
+      ]
     }
   },
   plugins: []

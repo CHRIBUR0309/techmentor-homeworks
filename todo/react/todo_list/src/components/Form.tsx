@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import AbstractButton from './AbstractButton';
+import InputStatusForm from './InputStatusForm';
+import InputTextForm from './InputTextForm';
 import { type Status } from '../../public/types/Types';
 import '../index.css';
 
@@ -23,23 +26,31 @@ const Form: React.FC<{
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2 className="">
-        <label htmlFor="new-todo-input" className="">
-          新規のTodoアイテム
-        </label>
-      </h2>
-      <input
-        type="text"
-        id="new-todo-input"
-        className=""
-        title="text"
-        autoComplete="off"
+      <InputTextForm
+        isTitle={true}
+        htmlFor="new-todo-title"
+        id="new-todo-title"
         value={title}
         onChange={handleChange}
       />
-      <button type="submit" className="">
-        追加
-      </button>
+      <InputStatusForm
+        todoId="new-todo-status"
+        status={status}
+        newStatus={status}
+        handleChange={handleChange}
+      />
+      <InputTextForm
+        isTitle={false}
+        htmlFor="new-todo-details"
+        id="new-todo-details"
+        value={title}
+        onChange={handleChange}
+      />
+      <AbstractButton
+        buttonLabel="追加"
+        buttonKind="other"
+        buttonType="submit"
+      />
     </form>
   );
 };

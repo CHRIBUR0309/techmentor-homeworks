@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import RadioButtons from './RadioButtons';
+import AbstractButton from './AbstractButton';
+import InputStatusForm from './InputStatusForm';
+import InputTextForm from './InputTextForm';
 import { type Status } from '../../public/types/Types';
 import '../index.css';
 
@@ -38,96 +40,79 @@ const Todo: React.FC<{
     setEditing(false);
   };
 
+  const htmlForTitle = `${todoId}_${title}`;
+  const htmlForDetails = `${todoId}_${details}`;
   const editingTemplate = (
     <form className="" onSubmit={handleSubmit}>
       <div className="">
-        <label className="" htmlFor={`${todoId}_${title}`}>
-          タイトル
-        </label>
-        <input
-          id={`${todoId}_${title}`}
-          className=""
-          type="text"
+        <InputTextForm
+          isTitle={true}
+          htmlFor={htmlForTitle}
+          id={htmlForTitle}
           value={newTitle}
           onChange={handleChange}
           ref={editFieldRef}
         />
-        <fieldset className="">
-          <legend className="">ステータス</legend>
-          <div className="">
-            <RadioButtons
-              todoId={todoId}
-              status={status}
-              newStatus={newStatus}
-              handleChange={handleChange}
-              editFieldRef={editFieldRef}
-            />
-          </div>
-        </fieldset>
-        <label className="" htmlFor={`${todoId}_${details}`}>
-          詳細
-        </label>
-        <input
-          id={`${todoId}_${details}`}
-          className=""
-          type="textarea"
+        <InputStatusForm
+          todoId={todoId}
+          status={status}
+          newStatus={newStatus}
+          handleChange={handleChange}
+          ref={editFieldRef}
+        />
+        <InputTextForm
+          isTitle={false}
+          htmlFor={htmlForDetails}
+          id={htmlForDetails}
           value={newDetails}
           onChange={handleChange}
           ref={editFieldRef}
         />
       </div>
       <div className="">
-        <button
-          type="button"
-          className=""
+        <AbstractButton
+          buttonLabel="キャンセル"
+          buttonKind="other"
+          buttonType="button"
           onClick={() => {
             setEditing(false);
           }}
-        >
-          キャンセル
-          <span className="">タイトル変更 {title}</span>
-        </button>
-        <button type="submit" className="">
-          保存
-          <span className="">タイトル {title}</span>
-        </button>
+        />
+        <AbstractButton
+          buttonLabel="保存"
+          buttonKind="other"
+          buttonType="submit"
+        />
       </div>
     </form>
   );
   const viewTemplate = (
-    <>
+    <div className="my-2">
       <div className="">
-        <div className="">{title}</div>
-        <RadioButtons
-          todoId={todoId}
-          status={status}
-          newStatus={newStatus}
-          handleChange={handleChange}
-          editFieldRef={editFieldRef}
-        />
+        <div className="">{`タイトル：${title}`}</div>
+        <div className="">{`ステータス：${status}`}</div>
+        <div className="">{`詳細：${details}`}</div>
       </div>
       <div className="">
-        <button
-          type="button"
-          className=""
+        <AbstractButton
+          buttonLabel="編集"
+          buttonKind="other"
+          buttonType="button"
           onClick={() => {
             setEditing(true);
           }}
           ref={editButtonRef}
-        >
-          編集 <span className="">{title}</span>
-        </button>
-        <button
-          type="button"
-          className=""
+        />
+        <AbstractButton
+          buttonLabel="削除"
+          buttonKind="delete"
+          buttonType="button"
           onClick={() => {
             deleteTodoItem(todoId);
           }}
-        >
-          削除 <span className="">{title}</span>
-        </button>
+        />
       </div>
-    </>
+    </div>
   );
   const wasEditing = usePrevious(isEditing);
   useEffect(() => {
