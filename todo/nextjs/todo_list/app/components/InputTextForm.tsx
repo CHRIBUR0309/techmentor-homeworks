@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import InputDetailsForm from './InputDetailsForm';
 import InputTitleForm from './InputTitleForm';

@@ -1,3 +1,5 @@
+'use client';
+
 import now from '../../public/utilities/now';
 import React from 'react';
 import { type Status } from '../../public/types/Types';

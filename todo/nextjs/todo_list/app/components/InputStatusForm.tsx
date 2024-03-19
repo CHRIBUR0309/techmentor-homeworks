@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import RadioButtons from './RadioButtons';
 import { type Status } from '../../public/types/Types';
@@ -13,7 +15,7 @@ const InputStatusForm: React.FC<{
     <fieldset className="mb-4">
       <legend className="block">ステータス</legend>
       <div className="">
-        {ref ? (
+        {ref !== undefined ? (
           <RadioButtons
             todoId={todoId}
             status={status}

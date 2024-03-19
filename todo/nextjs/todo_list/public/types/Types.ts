@@ -1,11 +1,11 @@
 type Status = 'Unprocessed' | 'Proceeding' | 'Finished';
 
-type TodoItem = {
+interface TodoItem {
   todoId: string;
   title: string;
   status: Status;
   details: string;
-};
+}
 
 type StatusFilterKey = 'All' | Status;
 

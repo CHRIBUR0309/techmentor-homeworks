@@ -1,7 +1,9 @@
+'use client';
+
 import React from 'react';
 import FormLabel from './FormLabel';
 
-const InputTitleForm: React.FC<{
+const InputDetailsForm: React.FC<{
   labelText: string;
   htmlFor: string;
   id: string;
@@ -10,17 +12,17 @@ const InputTitleForm: React.FC<{
   ref?: React.RefObject<HTMLInputElement>;
 }> = ({ labelText, htmlFor, id, value, onChange, ref }) => {
   const className =
-    'block w-1/2 rounded-md border-0 py-1.5 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600';
-  const placeholder = 'Todoタイトル';
+    'block h-40 w-1/2 rounded-md border-0 py-1.5 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600';
+  const placeholder = '詳細';
   return (
     <>
       <FormLabel labelText={labelText} htmlFor={htmlFor} />
-      {ref ? (
+      {ref !== undefined ? (
         <input
-          type="text"
+          type="textarea"
           id={id}
           className={className}
-          title="text"
+          title="textarea"
           autoComplete="off"
           value={value}
           placeholder={placeholder}
@@ -29,10 +31,10 @@ const InputTitleForm: React.FC<{
         />
       ) : (
         <input
-          type="text"
+          type="textarea"
           id={id}
           className={className}
-          title="text"
+          title="textarea"
           autoComplete="off"
           value={value}
           placeholder={placeholder}
@@ -43,4 +45,4 @@ const InputTitleForm: React.FC<{
   );
 };
 
-export default InputTitleForm;
+export default InputDetailsForm;

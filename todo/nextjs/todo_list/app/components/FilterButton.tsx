@@ -1,3 +1,6 @@
+/* eslint-disable no-irregular-whitespace */
+'use client';
+
 import React from 'react';
 import AbstractButton from './AbstractButton';
 import { type StatusFilterKey } from '../../public/types/Types';

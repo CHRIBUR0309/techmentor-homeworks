@@ -1,3 +1,5 @@
+'use client';
+
 import now from '../public/utilities/now';
 import React, { useEffect, useRef, useState } from 'react';
 import {

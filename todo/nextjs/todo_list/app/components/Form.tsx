@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import AbstractButton from './AbstractButton';
 import InputStatusForm from './InputStatusForm';

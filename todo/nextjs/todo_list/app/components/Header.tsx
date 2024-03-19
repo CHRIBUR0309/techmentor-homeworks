@@ -1,5 +1,4 @@
 import React from 'react';
-import '../index.css';
 
 const Header: React.FC<{ h1Text: string }> = ({ h1Text }) => {
   return (
