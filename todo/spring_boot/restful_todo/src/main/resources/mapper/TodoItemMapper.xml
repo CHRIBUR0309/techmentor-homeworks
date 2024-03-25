@@ -8,12 +8,14 @@
         <result property="details" column="details" />
     </resultMap>
     <select id="getAllItems" resultMap="todoItemResultMap"> SELECT * FROM todo_items </select>
-    <select id="getItem" resultMap="todoItemResultMap"> SELECT * FROM todo_items WHERE todo_id =
+    <select id="getItemById" resultMap="todoItemResultMap"> SELECT * FROM todo_items WHERE todo_id =
         #{todoId} </select>
-    <insert id="insertItemWithoutDetails"> INSERT INTO todo_items ( title , status ) VALUES (
-        #{title} , #{status} ) </insert>
-    <insert id="insertItemWithDetails"> INSERT INTO todo_items ( title , status , details ) VALUES (
-        #{title} , #{status} , #{details} ) </insert>
+    <select id="getItemsByStatus" resultMap="todoItemResultMap"> SELECT * FROM todo_items WHERE
+        status = #{status} </select>
+    <insert id="insertItemWithoutDetails"> INSERT INTO todo_items ( todo_id, title , status ) VALUES
+        ( #{todoId}, #{title} , #{status} ) </insert>
+    <insert id="insertItemWithDetails"> INSERT INTO todo_items ( todo_id, title , status , details )
+        VALUES ( #{todoId}, #{title} , #{status} , #{details} ) </insert>
     <update id="updateItem"> UPDATE todo_items SET title = #{title} , status = #{status} , details =
         #{details} WHERE todo_id = #{todoId} </update>
     <delete id="deleteItem"> DELETE FROM todo_items WHERE todo_id = #{todoId} </delete>

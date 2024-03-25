@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { type Status } from '../../public/types/Types';
+import '../index.css';
 import AbstractButton from './AbstractButton';
 import InputStatusForm from './InputStatusForm';
 import InputTextForm from './InputTextForm';
-import { type Status } from '../../public/types/Types';
-import '../index.css';
 
 const usePrevious = (value: boolean): boolean => {
   const ref = useRef(false);
@@ -20,55 +20,79 @@ const Todo: React.FC<{
   title: string;
   status: Status;
   details: string;
-  deleteTodoItem: (todoId: string) => void;
-  editTodoItem: (todoId: string, newTitle: string) => void;
+  deleteTodoItem: (todoId: string) => Promise<void>;
+  editTodoItem: (
+    todoId: string,
+    newTitle: string,
+    newStatus: Status,
+    newDetails: string
+  ) => Promise<void>;
 }> = ({ todoId, title, status, details, deleteTodoItem, editTodoItem }) => {
   const [isEditing, setEditing] = useState(false);
   const [newTitle, setNewTitle] = useState('');
-  const newStatus = useState<Status>('Unprocessed')[0];
-
-  const newDetails = useState('')[0];
-  const editFieldRef = useRef<HTMLInputElement>(null);
+  const [newStatus, setNewStatus] = useState<Status>('Unprocessed');
+  const [newDetails, setNewDetails] = useState('');
+  const editTitleFieldRef = useRef<HTMLInputElement>(null);
+  const editStatusFieldRef = useRef<HTMLInputElement>(null);
+  const editDetailsFieldRef = useRef<HTMLInputElement>(null);
   const editButtonRef = useRef<HTMLButtonElement>(null);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChangeTitle = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setNewTitle(event.target.value);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const handleChangeStatus = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setNewStatus(event.target.value as Status);
+  };
+
+  const handleChangeDetails = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setNewDetails(event.target.value);
+  };
+
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     event.preventDefault();
-    editTodoItem(todoId, newTitle);
-    setNewTitle('');
+    await editTodoItem(todoId, newTitle, newStatus, newDetails);
     setEditing(false);
+    setNewTitle('');
+    setNewStatus('Unprocessed');
+    setNewDetails('');
   };
 
   const htmlForTitle = `${todoId}_${title}`;
   const htmlForDetails = `${todoId}_${details}`;
   const editingTemplate = (
-    <form className="" onSubmit={handleSubmit}>
+    <form className="" method="post" onSubmit={() => handleSubmit}>
       <div className="">
         <InputTextForm
           isTitle={true}
           htmlFor={htmlForTitle}
           id={htmlForTitle}
           value={newTitle}
-          onChange={handleChange}
-          ref={editFieldRef}
+          onChange={handleChangeTitle}
+          ref={editTitleFieldRef}
         />
         <InputStatusForm
           todoId={todoId}
           status={status}
           newStatus={newStatus}
-          handleChange={handleChange}
-          ref={editFieldRef}
+          handleChange={handleChangeStatus}
+          ref={editStatusFieldRef}
         />
         <InputTextForm
           isTitle={false}
           htmlFor={htmlForDetails}
           id={htmlForDetails}
           value={newDetails}
-          onChange={handleChange}
-          ref={editFieldRef}
+          onChange={handleChangeDetails}
+          ref={editDetailsFieldRef}
         />
       </div>
       <div className="">
@@ -91,6 +115,7 @@ const Todo: React.FC<{
   const viewTemplate = (
     <div className="my-2">
       <div className="">
+        <div className="">{`ID：${todoId}`}</div>
         <div className="">{`タイトル：${title}`}</div>
         <div className="">{`ステータス：${status}`}</div>
         <div className="">{`詳細：${details}`}</div>
@@ -110,7 +135,7 @@ const Todo: React.FC<{
           buttonKind="delete"
           buttonType="button"
           onClick={() => {
-            deleteTodoItem(todoId);
+            void deleteTodoItem(todoId);
           }}
         />
       </div>
@@ -119,7 +144,7 @@ const Todo: React.FC<{
   const wasEditing = usePrevious(isEditing);
   useEffect(() => {
     if (!wasEditing && isEditing) {
-      editFieldRef.current?.focus();
+      editTitleFieldRef.current?.focus();
     } else if (wasEditing && !isEditing) {
       editButtonRef.current?.focus();
     }

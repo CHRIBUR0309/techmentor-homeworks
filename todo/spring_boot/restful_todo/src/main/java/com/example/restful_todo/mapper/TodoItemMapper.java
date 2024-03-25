@@ -1,18 +1,22 @@
 package com.example.restful_todo.mapper;
 
-import java.util.*;
-import org.apache.ibatis.annotations.*;
-import com.example.restful_todo.model.*;
+import com.example.restful_todo.model.TodoItem;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface TodoItemMapper {
     List<TodoItem> getAllItems();
 
-    TodoItem getItem(String todoId);
+    TodoItem getItemById(String todoId);
 
-    void insertItemWithoutDetails(String title, String status);
+    List<TodoItem> getItemsByStatus(String status);
 
-    void insertItemWithDetails(String title, String status, String details);
+    void insertItemWithoutDetails(String todoId, String title, String status);
+
+    void insertItemWithDetails(String todoId, String title, String status, String details);
 
     void updateItem(String todoId, String title, String status, String details);
 

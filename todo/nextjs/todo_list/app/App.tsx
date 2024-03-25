@@ -1,12 +1,21 @@
 'use client';
 
-import now from '../public/utilities/now';
+import {
+  deleteItem,
+  getAllItems,
+  getItemsByStatus,
+  insertItemWithDetails,
+  insertItemWithoutDetails,
+  updateItem
+} from '@/services/api';
+import { randomUUID } from 'crypto';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   type Status,
   type StatusFilterKey,
   type TodoItem
 } from '../public/types/Types';
+import now from '../public/utilities/now';
 import FilterButton from './components/FilterButton';
 import Form from './components/Form';
 import Header from './components/Header';
@@ -34,57 +43,50 @@ const getKeys = <T extends Record<string, unknown>>(obj: T): Array<keyof T> => {
 
 const FILTER_NAMES = getKeys(FILTER_MAP);
 
-const App: React.FC<{ propTodoItems: TodoItem[] }> = ({ propTodoItems }) => {
-  const [todoItems, setTodoItems] = useState(propTodoItems);
+const App: React.FC<unknown> = () => {
   const [filter, setFilter]: [
     filter: StatusFilterKey,
     setFilter: React.Dispatch<React.SetStateAction<StatusFilterKey>>
   ] = useState<StatusFilterKey>('All');
+  const [filteredTodoItemList, setFilteredTodoItemList] = useState<
+    React.JSX.Element[]
+  >([]);
+  const [todoItems, setTodoItems] = useState<TodoItem[]>([]);
 
-  const addTodoItem = (
+  const addTodoItem = async (
     title: string,
     status: Status = 'Unprocessed',
     details: string = ''
-  ): void => {
-    const newTodoItem: TodoItem = {
-      todoId: `todo-${crypto.randomUUID()}`,
-      title,
-      status,
-      details
-    };
-    setTodoItems([...todoItems, newTodoItem]);
+  ): Promise<void> => {
+    const todoId = randomUUID();
+    const result =
+      details === ''
+        ? await insertItemWithoutDetails(todoId, title, status)
+        : await insertItemWithDetails(todoId, title, status, details);
+    if (result.status === 'FAILED') {
+      console.log(result.message);
+    }
   };
 
-  const editTodoItem = (todoId: string, newTitle: string): void => {
-    const editedTodoItemList = todoItems.map((todoItem: TodoItem) => {
-      if (todoId === todoItem.todoId) {
-        return { ...todoItem, title: newTitle };
-      }
-      return todoItem;
-    });
-    setTodoItems(editedTodoItemList);
+  const editTodoItem = async (
+    todoId: string,
+    newTitle: string,
+    newStatus: Status,
+    newDetails: string
+  ): Promise<void> => {
+    const result = await updateItem(todoId, newTitle, newStatus, newDetails);
+    if (result.status === 'FAILED') {
+      console.log(result.message);
+    }
   };
 
-  const deleteTodoItem = (todoId: string): void => {
-    const remainingTodoItems = todoItems.filter(
-      (todoItem: TodoItem) => todoId !== todoItem.todoId
-    );
-    setTodoItems(remainingTodoItems);
+  const deleteTodoItem = async (todoId: string): Promise<void> => {
+    const result = await deleteItem(todoId);
+    if (result.status === 'FAILED') {
+      console.log(result.message);
+    }
   };
 
-  const filteredTodoItemList = todoItems
-    .filter(FILTER_MAP[filter])
-    .map((todoItem: TodoItem, i) => (
-      <Todo
-        key={`(todoItems.filter(FILTER_MAP[${filter}]))[${i}]_${now()}`}
-        todoId={todoItem.todoId}
-        title={todoItem.title}
-        status={todoItem.status}
-        details={todoItem.details}
-        deleteTodoItem={deleteTodoItem}
-        editTodoItem={editTodoItem}
-      />
-    ));
   const filterList = FILTER_NAMES.map((statusFilter, i) => (
     <FilterButton
       key={`FILTER_NAMES[${i}]_${now()}`}
@@ -93,11 +95,43 @@ const App: React.FC<{ propTodoItems: TodoItem[] }> = ({ propTodoItems }) => {
       setFilter={setFilter}
     />
   ));
+  useEffect(() => {
+    const f = async (): Promise<void> => {
+      const FilteredTodoItems = async (): Promise<React.JSX.Element[]> => {
+        const result = await getItemsByStatus(filter);
+        if (result.status === 'SUCCEEDED') {
+          return result.results.map((todoItem: TodoItem, i) => (
+            <Todo
+              key={`(todoItems.filter(FILTER_MAP[${filter}]))[${i}]_${now()}`}
+              todoId={todoItem.todoId}
+              title={todoItem.title}
+              status={todoItem.status}
+              details={todoItem.details}
+              deleteTodoItem={deleteTodoItem}
+              editTodoItem={editTodoItem}
+            />
+          ));
+        } else {
+          console.log(result.message);
+          return [];
+        }
+      };
+      setFilteredTodoItemList(await FilteredTodoItems());
+    };
+    void f();
+  }, [filter]);
   const headingText =
     filteredTodoItemList.length === 0
       ? 'Todoリストは空です。'
       : `${filteredTodoItemList.length}個のTodoアイテムがあります。`;
   const listHeadingRef = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    const f = async (): Promise<void> => {
+      const result = await getAllItems();
+      setTodoItems(result.status === 'SUCCEEDED' ? result.results : []);
+    };
+    void f();
+  }, []);
   const prevTodoItemLength = usePrevious(todoItems.length);
   useEffect(() => {
     if (todoItems.length < prevTodoItemLength) {
