@@ -100,7 +100,7 @@ const App: React.FC<unknown> = () => {
       const FilteredTodoItems = async (): Promise<React.JSX.Element[]> => {
         const result = await getItemsByStatus(filter);
         if (result.status === 'SUCCEEDED') {
-          return result.results.map((todoItem: TodoItem, i) => (
+          return result.results.map((todoItem, i) => (
             <Todo
               key={`(todoItems.filter(FILTER_MAP[${filter}]))[${i}]_${now()}`}
               todoId={todoItem.todoId}
@@ -147,7 +147,11 @@ const App: React.FC<unknown> = () => {
         {headingText}
       </h2>
       <ul role="list" className="">
-        {filteredTodoItemList}
+        {filteredTodoItemList.map((filteredTodoItem: React.JSX.Element, i) => (
+          <div className="" key={`filteredTodoItems[${i}]_${now()}`}>
+            {filteredTodoItem}
+          </div>
+        ))}
       </ul>
     </div>
   );

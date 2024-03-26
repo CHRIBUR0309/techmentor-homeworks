@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState } from 'react';
 import { type Status } from '../../public/types/Types';
 import '../index.css';

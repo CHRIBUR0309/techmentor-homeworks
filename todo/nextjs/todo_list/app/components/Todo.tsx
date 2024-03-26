@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useEffect, useRef, useState } from 'react';
 import { type Status } from '../../public/types/Types';
 import '../index.css';
@@ -37,6 +35,17 @@ const Todo: React.FC<{
   const editDetailsFieldRef = useRef<HTMLInputElement>(null);
   const editButtonRef = useRef<HTMLButtonElement>(null);
 
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    event.preventDefault();
+    await editTodoItem(todoId, newTitle, newStatus, newDetails);
+    setEditing(false);
+    setNewTitle('');
+    setNewStatus('Unprocessed');
+    setNewDetails('');
+  };
+
   const handleChangeTitle = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
@@ -53,17 +62,6 @@ const Todo: React.FC<{
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setNewDetails(event.target.value);
-  };
-
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    event.preventDefault();
-    await editTodoItem(todoId, newTitle, newStatus, newDetails);
-    setEditing(false);
-    setNewTitle('');
-    setNewStatus('Unprocessed');
-    setNewDetails('');
   };
 
   const htmlForTitle = `${todoId}_${title}`;

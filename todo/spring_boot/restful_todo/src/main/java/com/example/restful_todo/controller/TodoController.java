@@ -33,9 +33,6 @@ public class TodoController {
 
     @GetMapping("/get/status_{status}")
     public Collection<TodoItem> getItemsByStatus(@PathVariable String status) {
-        if (status == "All") {
-            return getAllItems();
-        }
         return todoItemService.getItemsByStatus(status);
     }
 
